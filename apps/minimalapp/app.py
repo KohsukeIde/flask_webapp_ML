@@ -7,9 +7,11 @@ from flask import (
     current_app,
     flash,
     g,
+    make_response,
     redirect,
     render_template,
     request,
+    session,
     url_for,
 )
 from flask_debugtoolbar import DebugToolbarExtension
@@ -72,7 +74,10 @@ with app.test_request_context("/user?updated=true"):
 
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    response = make_response(render_template("contact.html"))
+    response.set_cookie("key", "value")
+    session["username"] = "Ide"
+    return response
 
 
 @app.route("/contact/complete", methods=["GET", "POST"])
